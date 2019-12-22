@@ -6,10 +6,10 @@ from tensorflow.keras import regularizers
 from tensorflow.keras.losses import categorical_crossentropy
 from tensorflow.keras.optimizers import Adam
 
-def buildRNNModel(max_fatures, input_length, embed_dim, embedding_matrix, num_classes, num_GPU):
+def buildRNNModel(max_fatures, input_length, embed_dim, num_classes, num_GPU, embedding_matrix=None, usingWeight=False):
     model = Sequential()
 
-    if(embedding_matrix == None):
+    if(usingWeight == False):
         model.add(Embedding(max_fatures, embed_dim, input_length = input_length))
     else:
         model.add(Embedding(max_fatures, embed_dim, weights = [embedding_matrix], input_length = input_length, trainable = False))
@@ -25,29 +25,16 @@ def buildRNNModel(max_fatures, input_length, embed_dim, embedding_matrix, num_cl
             metrics = ['accuracy'])
     return model
 
-def buildLSTMModel(max_fatures, input_length, embed_dim, embedding_matrix, num_classes, num_GPU):
+def buildLSTMModel(max_fatures, input_length, embed_dim, num_classes, num_GPU, embedding_matrix=None, usingWeight=False):
     model = Sequential()
 
-    if(embedding_matrix == None):
+    if(usingWeight == False):
         model.add(Embedding(max_fatures, embed_dim, input_length = input_length))
     else:
-        model.add(Embedding(max_fatures, embed_dim, weights = [embedding_matrix], input_length = input_length, trainable = False))
-    # DCNN 0.77~0.8
-    # model.add(Dropout(0.4))
-    # model.add(Conv1D(256, 5, padding = 'valid', activation = 'relu', strides = 1, kernel_regularizer = regularizers.l2(0.01)))
-    # model.add(MaxPooling1D(pool_size = 2))
-    # model.add(LSTM(128, activation ='tanh', kernel_regularizer = regularizers.l2(0.01)))
-    # model.add(Dropout(0.4))
-
-    # # https://github.com/keras-team/keras/blob/master/examples/pretrained_word_embeddings.py 0.73
-    # model.add(Conv1D(128, 5, activation='relu'))
-    # model.add(MaxPooling1D(pool_size = 5))
-    # model.add(Conv1D(128, 5, activation='relu'))
-    # model.add(GlobalMaxPooling1D())
-    # model.add(Dense(128, activation='relu'))
-    # model.add(Dropout(0.4))
+        model.add(Embedding(max_fatures, embed_dim, weights = [embedding_matrix], input_length = input_length, trainable = True))
 
     model.add(LSTM(128, activation ='tanh'))
+    model.add(Dropout(0.2))
 
     model.add(Dense(num_classes, activation = 'softmax'))
 
@@ -59,10 +46,10 @@ def buildLSTMModel(max_fatures, input_length, embed_dim, embedding_matrix, num_c
             metrics = ['accuracy'])
     return model
 
-def buildGRUModel(max_fatures, input_length, embed_dim, embedding_matrix, num_classes, num_GPU):
+def buildGRUModel(max_fatures, input_length, embed_dim, num_classes, num_GPU, embedding_matrix=None, usingWeight=False):
     model = Sequential()
 
-    if(embedding_matrix == None):
+    if(usingWeight == False):
         model.add(Embedding(max_fatures, embed_dim, input_length = input_length))
     else:
         model.add(Embedding(max_fatures, embed_dim, weights = [embedding_matrix], input_length = input_length, trainable = False))

@@ -11,7 +11,8 @@ from core.Model.NLPModel import buildRNNModel, buildLSTMModel, buildGRUModel
 if __name__ == "__main__":
     readDataPath = './Data/train.csv'
     readDataPath2 = './Data/test.csv'
-    # readGlovePath = "./glove/glove.6B.300d.txt"
+    usingWeight = True
+    readGlovePath = "./glove/glove.6B.300d.txt"
     embed_dim = 300
     saveModelPath = "./Model/Keras_LSTM"
     saveTensorBoardPath = "./Model/Tensorboard/"
@@ -49,14 +50,12 @@ if __name__ == "__main__":
     print(x_train.shape[0], 'train samples')
     print(x_val.shape[0], 'val samples')
 
-    # # 讀取GloVe
-    # embedding_matrix, vocab_size = ConvertEmbeddingMatrix(readGlovePath, embed_dim, tokenizer)
+    # 讀取GloVe
+    embedding_matrix, vocab_size = ConvertEmbeddingMatrix(readGlovePath, embed_dim, tokenizer)
 
     # 建構模型
-    # model = buildRNNModel(vocab_size, x_train.shape[1], embed_dim, embedding_matrix, num_classes, num_GPU)
-    # model = buildLSTMModel(vocab_size, x_train.shape[1], embed_dim, embedding_matrix, num_classes, num_GPU)
-    # model = buildGRUModel(vocab_size, x_train.shape[1], embed_dim, embedding_matrix, num_classes, num_GPU)
-    model = buildLSTMModel(max_fatures, x_train.shape[1], embed_dim, None, num_classes, num_GPU)
+    # model = buildLSTMModel(max_fatures, x_train.shape[1], embed_dim, num_classes, num_GPU, usingWeight=usingWeight)
+    model = buildLSTMModel(vocab_size, x_train.shape[1], embed_dim, num_classes, num_GPU, embedding_matrix=embedding_matrix, usingWeight=usingWeight)
 
     # 訓練並儲存模型
     saveTrainModels(model, saveModelPath, saveTensorBoardPath, epochs, batch_size, x_train, y_train, x_val, y_val)

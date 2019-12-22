@@ -32,8 +32,8 @@ if __name__ == "__main__":
     #參數設定
     readDataPath = './Data/test.csv'
     readDataPath2 = './Data/train.csv'
-    loadModelPath = "./Model/Keras_LSTM_11_0.8747_0.7849.h5"
-    writePath = './result_Keras_LSTM_11_0.8747_0.7849.csv'
+    loadModelPath = "./Model/Keras_LSTM_05_0.8704_0.8105.h5"
+    writePath = './result_Keras_LSTM_05_0.8704_0.8105.csv'
     max_fatures = 2000
 
     #載入資料
