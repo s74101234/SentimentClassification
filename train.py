@@ -7,11 +7,12 @@ import re
 import keras
 from core.main import readText, saveTrainModels, ConvertEmbeddingMatrix
 from core.Model.NLPModel import buildRNNModel, buildLSTMModel, buildGRUModel
+from core.Model.NLPAppModel import buildAppModel
 
 if __name__ == "__main__":
     readDataPath = './Data/train.csv'
     readDataPath2 = './Data/test.csv'
-    usingWeight = True
+    usingWeight = False
     readGlovePath = "./glove/glove.6B.300d.txt"
     embed_dim = 300
     saveModelPath = "./Model/Keras_LSTM"
@@ -51,11 +52,12 @@ if __name__ == "__main__":
     print(x_val.shape[0], 'val samples')
 
     # 讀取GloVe
-    embedding_matrix, vocab_size = ConvertEmbeddingMatrix(readGlovePath, embed_dim, tokenizer)
+    # embedding_matrix, vocab_size = ConvertEmbeddingMatrix(readGlovePath, embed_dim, tokenizer)
 
     # 建構模型
+    model = buildAppModel(max_fatures, x_train.shape[1], embed_dim, num_classes, num_GPU, embedding_matrix=None, usingWeight=usingWeight)
     # model = buildLSTMModel(max_fatures, x_train.shape[1], embed_dim, num_classes, num_GPU, usingWeight=usingWeight)
-    model = buildLSTMModel(vocab_size, x_train.shape[1], embed_dim, num_classes, num_GPU, embedding_matrix=embedding_matrix, usingWeight=usingWeight)
+    # model = buildLSTMModel(vocab_size, x_train.shape[1], embed_dim, num_classes, num_GPU, embedding_matrix=embedding_matrix, usingWeight=usingWeight)
 
     # 訓練並儲存模型
     saveTrainModels(model, saveModelPath, saveTensorBoardPath, epochs, batch_size, x_train, y_train, x_val, y_val)
